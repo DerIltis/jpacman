@@ -67,9 +67,21 @@ public class PlayerCollisionsTest {
     @Test
     public void PacmanCollidesIntoGhostTest()
     {
+
+        PlayerCollisionTestOutcome expectedOutcome = new PlayerCollisionTestOutcome()
+            .WithKiller(ghost)
+            .WithPlayerDead()
+            .WithScore(player.getScore());
+
         collisions.collide(player, ghost);
-        Assertions.assertEquals(false, player.isAlive());
-        Assertions.assertEquals(ghost, player.getKiller());
+
+        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
+            .WithKiller(player.getKiller())
+            .WithPlayerIsAlive(player.isAlive())
+            .WithScore(player.getScore());
+
+        outcome.AssertTestOutcome(expectedOutcome);
+        // No pellet this time
     }
 
     /**
