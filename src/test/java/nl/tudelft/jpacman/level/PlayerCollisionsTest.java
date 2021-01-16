@@ -53,11 +53,20 @@ public class PlayerCollisionsTest {
     @Test
     public void PacmanCollidesIntoPelletTest()
     {
-        int expectedScore = pellet.getValue();
+        PlayerCollisionTestOutcome expectedOutcome = new PlayerCollisionTestOutcome()
+            .WithKiller(null)
+            .WithPlayerAlive()
+            .WithScore(pellet.getValue());
+
         collisions.collide(player, pellet);
-        Assertions.assertEquals(expectedScore, player.getScore());
-        Assertions.assertEquals(true, player.isAlive());
-        verify(pellet, times(1)).leaveSquare();
+
+        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
+            .WithKiller(player.getKiller())
+            .WithPlayerIsAlive(player.isAlive())
+            .WithScore(player.getScore());
+
+        outcome.AssertTestOutcome(expectedOutcome);
+        outcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 1);
     }
 
     /**
