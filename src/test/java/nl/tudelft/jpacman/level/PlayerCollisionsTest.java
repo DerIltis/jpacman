@@ -60,13 +60,8 @@ public class PlayerCollisionsTest {
 
         collisions.collide(player, pellet);
 
-        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
-            .WithKiller(player.getKiller())
-            .WithPlayerIsAlive(player.isAlive())
-            .WithScore(player.getScore());
-
-        outcome.AssertTestOutcome(player);
-        outcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 1);
+        expectedOutcome.AssertTestOutcome(player);
+        expectedOutcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 1);
     }
 
     /**
@@ -84,12 +79,7 @@ public class PlayerCollisionsTest {
 
         collisions.collide(player, ghost);
 
-        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
-            .WithKiller(player.getKiller())
-            .WithPlayerIsAlive(player.isAlive())
-            .WithScore(player.getScore());
-
-        outcome.AssertTestOutcome(player);
+        expectedOutcome.AssertTestOutcome(player);
         // No pellet this time
     }
 
@@ -106,12 +96,9 @@ public class PlayerCollisionsTest {
             .WithScore(player.getScore());
 
         collisions.collide(ghost, player);
-        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
-            .WithKiller(player.getKiller())
-            .WithPlayerIsAlive(player.isAlive())
-            .WithScore(player.getScore());
 
-        outcome.AssertTestOutcome(player);
+
+        expectedOutcome.AssertTestOutcome(player);
         // No pellet this time
     }
 
@@ -128,7 +115,6 @@ public class PlayerCollisionsTest {
             .WithScore(player.getScore());
 
         collisions.collide(ghost, pellet);
-
 
         expectedOutcome.AssertTestOutcome(player);
         expectedOutcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 0);
