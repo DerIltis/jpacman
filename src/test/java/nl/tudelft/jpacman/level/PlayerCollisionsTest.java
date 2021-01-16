@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman.level;
 
+import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.points.DefaultPointCalculator;
 import nl.tudelft.jpacman.sprite.PacManSprites;
@@ -78,9 +79,19 @@ public class PlayerCollisionsTest {
     @Test
     public void GhostCollidesIntoPacmanTest()
     {
+        PlayerCollisionTestOutcome expectedOutcome = new PlayerCollisionTestOutcome()
+            .WithKiller(ghost)
+            .WithPlayerDead()
+            .WithScore(player.getScore());
+
         collisions.collide(ghost, player);
-        Assertions.assertEquals(false, player.isAlive());
-        Assertions.assertEquals(ghost, player.getKiller());
+        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
+            .WithKiller(player.getKiller())
+            .WithPlayerIsAlive(player.isAlive())
+            .WithScore(player.getScore());
+
+        outcome.AssertTestOutcome(expectedOutcome);
+        // No pellet this time
     }
 
     /**
@@ -97,8 +108,8 @@ public class PlayerCollisionsTest {
 
         collisions.collide(ghost, pellet);
         PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
-            .WithKiller(null)
-            .WithPlayerAlive()
+            .WithKiller(player.getKiller())
+            .WithPlayerIsAlive(player.isAlive())
             .WithScore(player.getScore());
 
         outcome.AssertTestOutcome(expectedOutcome);
@@ -109,11 +120,11 @@ public class PlayerCollisionsTest {
 
     private class PlayerCollisionTestOutcome
     {
-        private Ghost Killer;
+        private Unit Killer;
         private int Score;
         private Boolean IsPlayerAlive;
 
-        public PlayerCollisionTestOutcome WithKiller(Ghost killer)
+        public PlayerCollisionTestOutcome WithKiller(Unit killer)
         {
             Killer = killer;
             return this;
@@ -125,9 +136,9 @@ public class PlayerCollisionsTest {
             return this;
         }
 
-        public PlayerCollisionTestOutcome WithPlayerAlive()
+        public PlayerCollisionTestOutcome WithPlayerIsAlive(Boolean isAlive)
         {
-            IsPlayerAlive = true;
+            IsPlayerAlive = isAlive;
             return this;
         }
 
@@ -137,6 +148,11 @@ public class PlayerCollisionsTest {
             return this;
         }
 
+        public PlayerCollisionTestOutcome WithPlayerAlive()
+        {
+            IsPlayerAlive = true;
+            return this;
+        }
 
         private PlayerCollisionTestOutcome()
         {
