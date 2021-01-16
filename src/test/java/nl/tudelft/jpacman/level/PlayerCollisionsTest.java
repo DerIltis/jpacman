@@ -65,7 +65,7 @@ public class PlayerCollisionsTest {
             .WithPlayerIsAlive(player.isAlive())
             .WithScore(player.getScore());
 
-        outcome.AssertTestOutcome(expectedOutcome);
+        outcome.AssertTestOutcome(player);
         outcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 1);
     }
 
@@ -89,7 +89,7 @@ public class PlayerCollisionsTest {
             .WithPlayerIsAlive(player.isAlive())
             .WithScore(player.getScore());
 
-        outcome.AssertTestOutcome(expectedOutcome);
+        outcome.AssertTestOutcome(player);
         // No pellet this time
     }
 
@@ -111,7 +111,7 @@ public class PlayerCollisionsTest {
             .WithPlayerIsAlive(player.isAlive())
             .WithScore(player.getScore());
 
-        outcome.AssertTestOutcome(expectedOutcome);
+        outcome.AssertTestOutcome(player);
         // No pellet this time
     }
 
@@ -128,13 +128,10 @@ public class PlayerCollisionsTest {
             .WithScore(player.getScore());
 
         collisions.collide(ghost, pellet);
-        PlayerCollisionTestOutcome outcome = new PlayerCollisionTestOutcome()
-            .WithKiller(player.getKiller())
-            .WithPlayerIsAlive(player.isAlive())
-            .WithScore(player.getScore());
 
-        outcome.AssertTestOutcome(expectedOutcome);
-        outcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 0);
+
+        expectedOutcome.AssertTestOutcome(player);
+        expectedOutcome.AssertNumberOfTimesPelletLeavesSquare(pellet, 0);
     }
 
 
@@ -180,11 +177,11 @@ public class PlayerCollisionsTest {
 
         }
 
-        public void AssertTestOutcome(@NotNull PlayerCollisionTestOutcome expectedOutcome)
+        public void AssertTestOutcome(@NotNull Player player)
         {
-            Assertions.assertEquals(expectedOutcome.Score, this.Score);
-            Assertions.assertEquals(expectedOutcome.IsPlayerAlive, this.IsPlayerAlive);
-            Assertions.assertEquals(expectedOutcome.Killer, this.Killer);
+            Assertions.assertEquals(player.getScore(), this.Score);
+            Assertions.assertEquals(player.isAlive(), this.IsPlayerAlive);
+            Assertions.assertEquals(player.getKiller(), this.Killer);
         }
 
         private void AssertNumberOfTimesPelletLeavesSquare(Pellet pellet, int expectedNumberOfTimes)
